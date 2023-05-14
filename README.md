@@ -11,6 +11,8 @@
   - [Writing the Smart Contract](#writing-the-smart-contract)
   - [Testing the Smart Contract on Celo using Hardhat](#testing-the-smart-contract-on-celo-using-hardhat)
   - [Debugging with Tenderly](#debugging-with-tenderly)
+    - [What is Tenderly](#what-is-tenderly)
+    - [How to start debugging with tenderly](#how-to-start-debugging-with-tenderly)
   - [Deploying the Smart Contract on Celo using Hardhat](#deploying-the-smart-contract-on-celo-using-hardhat)
   - [Conclusion](#conclusion)
 
@@ -131,23 +133,60 @@ Create a new file called `Token.sol` in the `contracts` directory with the follo
 
 ```solidity
 // SPDX-License-Identifier: MIT
+/**
+ * @title Token
+ * @dev ERC20 token contract that implements a custom token named MyToken (MTK).
+ **/
 pragma solidity ^0.8.0;
 
+// Visit https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/token/ERC20/ERC20.sol for full code
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+// Visit https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/utils/math/SafeMath.sol for full code 
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
 
 contract Token is ERC20 {
+    using SafeMath for uint256;
+
+    event Mint(address indexed to, uint256 amount);
+    event Transfers(address indexed from, address indexed to, uint256 amount);
+
+    /**
+     * @dev Constructor that mints 1,000,000 MyToken (MTK) tokens to the contract deployer.
+    **/
     constructor() ERC20("MyToken", "MTK") {
         _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
+    /**
+     * @dev Mints a specified amount of MyToken (MTK) tokens to the specified recipient address.
+     * @param to - The address of the recipient to receive the tokens.
+     * @param amount - The amount of tokens to mint and transfer to the recipient.
+     * Requirements:
+     * - `to` cannot be the zero address.
+     * - `amount` must be greater than zero.
+     * Emits a [Mint] event.
+     * Emits a [Transfer] event.
+    **/
     function mint(address to, uint256 amount) public {
+        require(to != address(0), "Invalid recipient address");
+        require(amount > 0, "Invalid amount");
+
         _mint(to, amount);
+        emit Mint(to, amount);
+        emit Transfers(address(0), to, amount);
     }
 
-    function balanceOf(address account) public view override returns (uint256) {
+    /**
+     * @dev Returns - the balance of MyToken (MTK) tokens held by the specified account.
+     * @param account - The address of the account to check the balance of.
+     * @return accountbalance - The balance of MyToken (MTK) tokens held by the specified account.
+    **/
+    function balanceOf(address account) public view override returns (uint256 accountbalance) {
         return super.balanceOf(account);
     }
 }
+
 ```
 
 Let me walk you through the code line by line:
@@ -177,10 +216,15 @@ This is an internal function that mints a specified amount of tokens and assigns
 
 ```solidity
     function mint(address to, uint256 amount) public {
+        require(to != address(0), "Invalid recipient address");
+        require(amount > 0, "Invalid amount");
+
         _mint(to, amount);
+        emit Mint(to, amount);
+        emit Transfers(address(0), to, amount);
     }
 
-    function balanceOf(address account) public view override returns (uint256) {
+    function balanceOf(address account) public view override returns (uint256 accountbalance) {
         return super.balanceOf(account);
     }
 ```
@@ -274,6 +318,15 @@ In the fourth it block, wyoue test that tokens can be transferred between accoun
 This will run the tests you just wrote and output the results to the console.
 
 ## Debugging with Tenderly
+
+### What is Tenderly
+Tenderly is a platform for debugging, monitoring, and analyzing smart contracts on Ethereum. It provides a suite of tools that allow developers to test and verify their smart contracts' functionality and performance in different scenarios.
+
+To use Tenderly for debugging a smart contract, a developer can create a project and connect it to their Ethereum account or network. They can then deploy their smart contract to the network and use Tenderly's tools to monitor its activity and behavior. For example, developers can use Tenderly's transaction simulator to simulate different transactions and see how the contract reacts. They can also use Tenderly's debugger to step through the contract code and analyze its behavior in detail.
+
+In addition to debugging, Tenderly also provides tools for monitoring and analyzing smart contracts in production. This includes tracking contract activity, analyzing gas usage, and detecting potential vulnerabilities. By using Tenderly, developers can gain greater visibility into their smart contracts and ensure that they are functioning as intended.
+
+### How to start debugging with tenderly
 
 1. Create a new account on Tenderly **[here](https://dashboard.tenderly.co/signup).**
 
