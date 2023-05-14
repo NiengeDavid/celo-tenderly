@@ -4,6 +4,7 @@
 - [How to Debug and Deploy Solidity Smart Contracts on Celo Using Hardhat and Tenderly](#how-to-debug-and-deploy-solidity-smart-contracts-on-celo-using-hardhat-and-tenderly)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
+  - [Objective](#objective)
   - [Prerequisites](#prerequisites)
   - [Requirements](#requirements)
   - [Understanding the Celo Blockchain](#understanding-the-celo-blockchain)
@@ -21,7 +22,13 @@ Solidity is a programming language used to write smart contracts on blockchain p
 Hardhat and Tenderly are two popular tools that help developers in the development, deployment, and monitoring of smart contracts. 
 Hardhat is an open-source development environment that provides a comprehensive set of tools for building, testing, and deploying smart contracts on Celo. Tenderly, on the other hand, is a blockchain monitoring and debugging platform that allows developers to track the performance of their smart contracts and identify any issues.
 
-In this tutorial, I will walk you through the process of deploying, debugging, and monitoring a Solidity smart contract on Celo using Hardhat and Tenderly. By the end of this tutorial, you will have a good understanding of the development process and best practices for building and deploying Solidity smart contracts on Celo.
+In this tutorial, I will walk you through the process of deploying, debugging, and monitoring a Solidity smart contract on Celo using Hardhat and Tenderly. 
+
+
+## Objective
+
+By the end of this tutorial, you will have a good understanding of the development process and best practices for building and deploying Solidity smart contracts on Celo.
+
 
 ## Prerequisites
 
@@ -35,7 +42,7 @@ In this tutorial, I will walk you through the process of deploying, debugging, a
 2. NPM: NPM is the package manager for Node.js. You can install it by running the command `npm install npm@latest -g` in your terminal.
 3. Hardhat: Install Hardhat globally by running the command `npm install -g hardhat` in your terminal.
 4. Celo Extension Wallet: Install the Celo Extension Wallet from the Chrome Web **[Store](https://chrome.google.com/webstore/detail/celo-extension-wallet/knlhknnkjdlbdgpkacnchnllnflofpml)**.
-5. Tenderly: Sign up for Tenderly **[here](https://dashboard.tenderly.co/signup)**.
+6. Tenderly: Sign up for Tenderly **[here](https://dashboard.tenderly.co/signup)**.
 
 ## Understanding the Celo Blockchain
 
@@ -118,6 +125,17 @@ Here, you are importing the necessary plugins for Hardhat, including `@nomiclabs
 The `hardhat` network is the default network used for local development and testing. The `celo` network is used for deploying the contract to the Celo network. We have specified the `url`, `chainId`, `gasPrice`, and `accounts` for the `celo` network.
 
 Note that you will need to replace the mnemonic with your own mnemonic.
+
+
+**Note**: The config file was set to deploy the smart contract on the Celo mainnet which requires the use of real CELO tokens to cover the gas fees.These tokens can be obtained through exchanges or by using a wallet that supports the Celo network.  However, if you intend to deploy on the Celo testnet, you will need to use a different URL and ChainID.
+
+```
+url: https://alfajores-forno.celo-testnet.org/
+chainId: 44787
+```
+
+Deploying on the Celo testnet is a more cost-effective and safer option as it allows developers to test their smart contracts in a simulated environment without risking real funds. It is also recommended to use testnet tokens, which can be obtained from the Celo Faucet [here](https://faucet.celo.org/alfajores).
+
 
 ## Writing the Smart Contract
 
